@@ -43,7 +43,7 @@ class DFTypesConfig:
     Output file path
     """
 
-    class_name: str = "TypedDF"
+    class_name: str = "TypedRowTuple"
     """
     Name for the generated class
     """
@@ -56,4 +56,9 @@ class DFTypesConfig:
     use_slots: bool = True
     """
     Whether to use __slots__ in the generated class
+    """
+
+    nan_to_none: bool = True
+    """
+    Whether to convert NaN values to None
     """

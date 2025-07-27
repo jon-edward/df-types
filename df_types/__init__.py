@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from df_types._infer import infer_types
-from df_types._codegen import generate_types
+from df_types._infer_types import infer_types
+from df_types._codegen import generate_types_file
 from df_types._util import normalize_columns
 
 from df_types.config import DFTypesConfig
@@ -23,15 +23,11 @@ class DFTypes:
             for col, name in zip(
                 self.df.columns, normalize_columns(self.df.columns.tolist())
             )
+            if col != name
         }
         types = {col: infer_types(self.df[col], self.config) for col in self.df.columns}
 
-        output_file = self.config.output_file
-        if isinstance(output_file, str) and not output_file.endswith(".py"):
-            output_file += ".py"
-
-        with open(self.config.output_file, "w") as f:
-            f.write(generate_types(col_to_attr_names, types, self.config))
+        generate_types_file(col_to_attr_names, types, self.config)
 
 
 def _sample_df(df: pd.DataFrame, config: DFTypesConfig) -> pd.DataFrame:
