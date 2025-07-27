@@ -163,6 +163,7 @@ def write_types(
 
     if os.path.exists(output_file) and not _file_starts_with_header(output_file):
         raise FileExistsError(f"File already exists: {output_file}")
-
+    
+    # Only allow overwriting if the file starts with the header
     with open(output_file, "w") as f:
         f.write(generate_types(col_to_attr_names, types, config))

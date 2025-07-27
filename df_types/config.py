@@ -18,7 +18,7 @@ class DFTypesConfig:
     Number of rows to sample from the tail of the DataFrame to infer types
     """
 
-    max_literal_size: int = 10
+    max_literal_values: int = 10
     """
     Maximum number of literals to infer
     """

@@ -37,7 +37,7 @@ def _convert_circular(type_name: tuple[str, str]):
     return type_name
 
 
-_literal_types = {int, float, str, bytes, bool, type(None)}
+_literal_types = {int, str, bytes}
 
 
 def infer_types(
@@ -52,7 +52,7 @@ def infer_types(
 
     types: set[type] = set(series.map(type).unique().tolist())
 
-    if not config.infer_literals or types > _literal_types:
+    if not config.infer_literals or types - _literal_types:
         # Contains non-literal types or user does not want to infer literals
         # Do not attempt to infer literals
         type_names = {_convert_circular(_get_package_name(type_)) for type_ in types}
@@ -60,8 +60,10 @@ def infer_types(
 
     value_counts = series.value_counts().sort_values(ascending=False)
 
-    if len(value_counts) < config.max_literal_size:
+    if len(value_counts) + contains_nans < config.max_literal_values:
         reprs = {repr(value) for value in value_counts.index}
+        if contains_nans:
+            reprs.add("None")
         if sum(len(r) for r in reprs) < config.max_literal_repr_len:
             return InferredLiterals(literal_reprs=reprs)
 
