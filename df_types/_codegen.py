@@ -152,7 +152,7 @@ def _file_starts_with_header(file_path: str | Path) -> bool:
         return f.read(len(_HEADER)).startswith(_HEADER)
 
 
-def generate_types_file(
+def write_types(
     col_to_attr_names: dict[str, str],
     types: dict[str, InferredTypeNames | InferredLiterals],
     config: DFTypesConfig,

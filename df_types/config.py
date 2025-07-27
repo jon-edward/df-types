@@ -1,7 +1,4 @@
-from dataclasses import dataclass, field
-from pathlib import Path
-
-import numpy as np
+from dataclasses import dataclass
 
 
 @dataclass
@@ -31,19 +28,17 @@ class DFTypesConfig:
     Maximum cumulative repr size of all literals
     """
 
-    random_state: np.random.RandomState | int = field(
-        default_factory=np.random.RandomState
-    )
+    random_seed: int | None = None
     """
-    Random state to use for sampling
+    Random seed to use for sampling
     """
 
-    output_file: str | Path = "typed_df.py"
+    output_file: str = "typed_df.py"
     """
     Output file path
     """
 
-    class_name: str = "TypedRowTuple"
+    class_name: str = "TypedRowData"
     """
     Name for the generated class
     """
